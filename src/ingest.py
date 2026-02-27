@@ -25,5 +25,15 @@ def main(device_type,):
         device='cuda'
     # To load the documents and split it into chunks
     print(f"Loading documents from Source Directory")
-    
+    documents = load_documents()
+    textsplitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=120)
+    texts = textsplitter.split_documents(documents)
+    print(f"loaded {len(documents)} documents from Source Directory")
+    print(f"split into {len(texts)} text chunks")
+    # Create embeddings
+    embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-base",model_kwargs={"device":device})
+    db = FAISS.from_documents(texts, embeddings)
+    db.save_local('faiss_index')
 
+if __name__=="__main__":
+    main()
