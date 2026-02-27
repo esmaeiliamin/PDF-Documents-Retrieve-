@@ -37,3 +37,7 @@ def main(device_type,):
 
 if __name__=="__main__":
     main()
+
+
+# Run with :
+# python run_localGPT.py --device_type cpu
